@@ -4,7 +4,7 @@
     "should_trigger": true
   },
   {
-    "query": "build me a streaming chatbot on together with tool calling — it needs to hit our internal orders API and always return JSON matching a fixed schema",
+    "query": "build me a streaming chatbot on together with tool calling \u2014 it needs to hit our internal orders API and always return JSON matching a fixed schema",
     "should_trigger": true
   },
   {
@@ -60,7 +60,7 @@
     "should_trigger": true
   },
   {
-    "query": "port our summarization pipeline from gpt-4o to claude sonnet on bedrock — mainly need help with the tool-use block format differences",
+    "query": "port our summarization pipeline from gpt-4o to claude sonnet on bedrock \u2014 mainly need help with the tool-use block format differences",
     "should_trigger": false
   },
   {
@@ -88,7 +88,19 @@
     "should_trigger": false
   },
   {
-    "query": "review this PR that refactors our retry decorator — mostly want to know if the exponential backoff jitter is implemented correctly",
+    "query": "review this PR that refactors our retry decorator \u2014 mostly want to know if the exponential backoff jitter is implemented correctly",
+    "should_trigger": false
+  },
+  {
+    "query": "Launch Claude Code through TogetherLink but pin the whole session to GLM 5.3 instead of the auto router.",
+    "should_trigger": true
+  },
+  {
+    "query": "togetherlink says No API key configured. How do I save my Together key?",
+    "should_trigger": true
+  },
+  {
+    "query": "Run Claude Code on Amazon Bedrock with my AWS credentials.",
     "should_trigger": false
   }
 ]

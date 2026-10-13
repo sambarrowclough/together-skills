@@ -1,6 +1,6 @@
 ---
 name: together-ai
-description: "Together AI platform skill covering every product area: chat completions and streaming text generation, tool calling, structured outputs, reasoning and vision models; image generation and editing with FLUX and Kontext; video generation; text-to-speech and speech-to-text; embeddings, reranking, and RAG retrieval; fine-tuning (LoRA, full, DPO, VLM, BYOM); batch inference; LLM-as-a-judge evaluations; code sandboxes; dedicated model inference (tg beta endpoints, deployments, autoscaling, traffic splits, custom model and LoRA uploads); dedicated containers (Sprocket, Jig, queue jobs); GPU clusters (H100, H200, B200, Kubernetes, Slurm); and Kueue quota queueing or Volcano gang scheduling on those clusters. Reach for it whenever the user builds, debugs, deploys, trains, evaluates, or operates anything on Together AI, or mentions the together SDK, the tg or together CLI, api.together.ai, TOGETHER_API_KEY, or a Together-hosted model id. The skill body routes each request to the matching domain guide."
+description: "Together AI platform skill covering every product area: chat completions and streaming text generation, tool calling, structured outputs, reasoning and vision models; image generation and editing (FLUX, Kontext); video generation; text-to-speech and speech-to-text; embeddings and reranking; fine-tuning (LoRA, full, DPO, VLM, BYOM); batch inference; LLM-as-a-judge evaluations; code sandboxes; dedicated model inference (tg beta endpoints, deployments, autoscaling, traffic splits, model and LoRA uploads); dedicated containers (Sprocket, Jig); GPU clusters (Kubernetes, Slurm) with Kueue or Volcano scheduling; and TogetherLink (tlink, tclaude) for running Claude Code, Codex, OpenCode, or desktop apps on Together models. Reach for it whenever the user builds, debugs, deploys, trains, evaluates, or operates anything on Together AI, or mentions the together SDK, the tg CLI, TogetherLink, api.together.ai, TOGETHER_API_KEY, or a Together-hosted model id. The skill body routes each request to the matching domain guide."
 ---
 
 # Together AI
@@ -12,7 +12,10 @@ only when it holds a detail you need. Paths are relative to this skill's directo
 ## Setup
 
 - Auth: `TOGETHER_API_KEY` in the environment. Python: `uv pip install --upgrade "together>=2.0.0"`,
-  then `client = Together()`. TypeScript: `npm install together-ai`, then `new Together()`.
+  then `client = Together()`. TypeScript: `npm install together-ai`, then `new Together()`. The
+  Python SDK and this skill's scripts use only the API key. From CLI 2.41, `tg login` signs in
+  through a browser device flow (`--no-browser` prints the URL) and `tg switch` picks a project;
+  it is interactive, so ask the user to run it. The CLI also accepts `TOGETHER_API_KEY`.
 - CLI: `uv tool install "together[cli]"` gives `tg` (alias `together`), used for dedicated
   inference, clusters, and fine-tuning. If `tg beta endpoints` or `tg beta models` is missing, the
   CLI is outdated: `uv tool upgrade together`. From 2.40, `tg` prints JSON by default when an AI
@@ -36,12 +39,14 @@ only when it holds a detail you need. Paths are relative to this skill's directo
 | `domains/gpu-clusters.md` | H100/H200/B200 clusters, Kubernetes or Slurm, shared storage, credentials |
 | `domains/kueue.md` | quota-gated job queueing on a Together Kubernetes cluster |
 | `domains/volcano.md` | all-or-nothing gang scheduling on a Together Kubernetes cluster |
+| `domains/togetherlink.md` | TogetherLink (`tlink`, `tclaude`): run Claude Code, Codex, OpenCode, Pi Code, Claude Desktop, or ChatGPT Desktop on Together models; install, keys, `--main` pinning, headless runs, usage |
 
 Close calls: a still image is `images`, motion is `video`. Hosting a model is
 `dedicated-model-inference`, hosting your own container image is `dedicated-containers`, raw nodes
 are `gpu-clusters`. Jobs that wait for quota use `kueue`; pods that must start together use
-`volcano`. A task spanning areas (chat + images + audio, or tune, deploy, evaluate) reads each
-guide when it reaches that step.
+`volcano`. Running an existing coding agent or desktop app on Together models is `togetherlink`;
+calling the API from the user's own code is `chat-completions` or `images`. A task spanning areas
+(chat + images + audio, or tune, deploy, evaluate) reads each guide when it reaches that step.
 
 ## Rules for every area
 

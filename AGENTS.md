@@ -29,7 +29,7 @@ Keep the router lean and the menus precise.
 
 ## Domain registry
 
-There are 14 domain guides under `skills/together-ai/domains/`:
+There are 15 domain guides under `skills/together-ai/domains/`:
 
 <domains>
 - **audio.md** (Audio): Text-to-speech (REST, streaming, realtime WebSocket) and speech-to-text (transcription, translation, diarization, timestamps, realtime).
@@ -44,6 +44,7 @@ There are 14 domain guides under `skills/together-ai/domains/`:
 - **images.md** (Images): Text-to-image generation and image editing.
 - **kueue.md** (Kueue on Together GPU clusters): Kueue is a Kubernetes-native job queueing controller.
 - **sandboxes.md** (Sandboxes): Managed remote Python execution with stateful sessions, for running agent-written code, data analysis, and charts.
+- **togetherlink.md** (TogetherLink): TogetherLink (`togetherlink`, alias `tlink`; beta) runs coding agents and desktop apps you already have on models hosted by Together AI: Claude Code, Codex, OpenCode, Pi Code, Claude Desktop and Cowork, and ChatGPT Desktop.
 - **video.md** (Video): Text-to-video and image-to-video, billed per video.
 - **volcano.md** (Volcano on Together GPU clusters): Volcano is a Kubernetes-native batch scheduler.
 
@@ -52,7 +53,7 @@ There are 14 domain guides under `skills/together-ai/domains/`:
 ## Skill registry
 
 <skills>
-- **together-ai**: Together AI platform skill covering every product area: chat completions and streaming text generation, tool calling, structured outputs, reasoning and vision models; image generation and editing with FLUX and Kontext; video generation; text-to-speech and speech-to-text; embeddings, reranking, and RAG retrieval; fine-tuning (LoRA, full, DPO, VLM, BYOM); batch inference; LLM-as-a-judge evaluations; code sandboxes; dedicated model inference (tg beta endpoints, deployments, autoscaling, traffic splits, custom model and LoRA uploads); dedicated containers (Sprocket, Jig, queue jobs); GPU clusters (H100, H200, B200, Kubernetes, Slurm); and Kueue quota queueing or Volcano gang scheduling on those clusters. Reach for it whenever the user builds, debugs, deploys, trains, evaluates, or operates anything on Together AI, or mentions the together SDK, the tg or together CLI, api.together.ai, TOGETHER_API_KEY, or a Together-hosted model id. The skill body routes each request to the matching domain guide.
+- **together-ai**: Together AI platform skill covering every product area: chat completions and streaming text generation, tool calling, structured outputs, reasoning and vision models; image generation and editing (FLUX, Kontext); video generation; text-to-speech and speech-to-text; embeddings and reranking; fine-tuning (LoRA, full, DPO, VLM, BYOM); batch inference; LLM-as-a-judge evaluations; code sandboxes; dedicated model inference (tg beta endpoints, deployments, autoscaling, traffic splits, model and LoRA uploads); dedicated containers (Sprocket, Jig); GPU clusters (Kubernetes, Slurm) with Kueue or Volcano scheduling; and TogetherLink (tlink, tclaude) for running Claude Code, Codex, OpenCode, or desktop apps on Together models. Reach for it whenever the user builds, debugs, deploys, trains, evaluates, or operates anything on Together AI, or mentions the together SDK, the tg CLI, TogetherLink, api.together.ai, TOGETHER_API_KEY, or a Together-hosted model id. The skill body routes each request to the matching domain guide.
 
 </skills>
 

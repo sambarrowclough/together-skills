@@ -2,7 +2,7 @@
 
 A single agent skill providing comprehensive knowledge of the [Together AI](https://together.ai) platform — inference, training, embeddings, audio, video, images, function calling, and infrastructure.
 
-It uses **progressive disclosure**: one always-loaded description, a compact router, then one of 14 domain guides, then deep references and runnable scripts. Only the parts relevant to your task ever enter the agent's context.
+It uses **progressive disclosure**: one always-loaded description, a compact router, then one of 15 domain guides, then deep references and runnable scripts. Only the parts relevant to your task ever enter the agent's context.
 
 Each skill teaches AI coding agents how to use a specific Together AI product, including API patterns, SDK usage (Python and TypeScript), CLI commands, direct API usage, model selection, and best practices. Skills include runnable Python scripts (using the **Together Python v2 SDK**), TypeScript examples, and CLI/API workflow guidance.
 
@@ -36,6 +36,7 @@ Each skill contains:
 | **images.md** | Text-to-image generation and image editing. | `generate_image.py`, `generate_image.ts`, `kontext_editing.py` |
 | **kueue.md** | Kueue is a Kubernetes-native job queueing controller. | — |
 | **sandboxes.md** | Managed remote Python execution with stateful sessions, for running agent-written code, data analysis, and charts. | `execute_with_session.py`, `execute_with_session.ts` |
+| **togetherlink.md** | TogetherLink (`togetherlink`, alias `tlink`; beta) runs coding agents and desktop apps you already have on models hos... | — |
 | **video.md** | Text-to-video and image-to-video, billed per video. | `generate_video.py`, `generate_video.ts`, `image_to_video.py` |
 | **volcano.md** | Volcano is a Kubernetes-native batch scheduler. | — |
 <!-- END_SKILLS_TABLE -->
