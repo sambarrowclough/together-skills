@@ -135,7 +135,7 @@ only for the detail named in its row, and read just that section; each starts wi
 
 | File | Lines | Contains | Open when |
 |---|---|---|---|
-| [scripts/dedicated-model-inference/deploy_model.py](scripts/dedicated-model-inference/deploy_model.py) | 268 | SDK path: deploy, poll to READY, infer on the dedicated base URL, scale, clean up | scripting the lifecycle in Python |
+| [scripts/dedicated-model-inference/deploy_model.py](scripts/dedicated-model-inference/deploy_model.py) | 288 | SDK path: deploy, poll to READY, infer on the dedicated base URL, scale, clean up | scripting the lifecycle in Python |
 | [scripts/dedicated-model-inference/upload_custom_model.py](scripts/dedicated-model-inference/upload_custom_model.py) | 158 | upload custom weights or a LoRA adapter, then deploy | serving your own weights |
 | [references/dedicated-model-inference/cli-reference.md](references/dedicated-model-inference/cli-reference.md) | 298 | every `tg endpoints` and `models` command and flag: deploy, get, update, rm, `ab`, `shadow`; what the CLI cannot do | a CLI flag or subcommand |
 | [references/dedicated-model-inference/api-reference.md](references/dedicated-model-inference/api-reference.md) | 495 | SDK and REST for endpoints and deployments: states, autoscaling and scaling metrics, stop/restart, routing, deletion, Prometheus monitoring, Events Feed | SDK calls, metrics, or the events feed |
