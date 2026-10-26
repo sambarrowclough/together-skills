@@ -330,12 +330,12 @@ Reasoning output is billed as completion tokens. The extra token counts (reasoni
 prompt tokens) always live somewhere on `response.usage`, but their **location varies by model**, so
 read both shapes defensively.
 
-- **Reasoning models** (for example `deepseek-ai/DeepSeek-V4-Pro-0813`, `Qwen/Qwen3.6-Plus`,
-  `zai-org/GLM-5.2`) nest them OpenAI-style:
+- **Most models** (for example `deepseek-ai/DeepSeek-V4-Pro-0813`, `Qwen/Qwen3.6-Plus`,
+  `zai-org/GLM-5.2`, `zai-org/GLM-5.3-Flash`) nest them OpenAI-style:
   - `usage.completion_tokens_details.reasoning_tokens`
   - `usage.prompt_tokens_details.cached_tokens`
-- **Some non-reasoning models** (for example `meta-llama/Llama-3.3-70B-Instruct-Turbo`) return
-  `cached_tokens` flat at the top level of `usage`, with no `*_details` objects.
+- **Some models** return them flat at the top level of `usage`, with no `*_details` objects:
+  `Qwen/Qwen3.5-9B` returned `usage.reasoning_tokens` this way (observed 2026-10-26).
 
 A client configured for only one shape will silently return `0` for all others. Fall back across
 both locations:
@@ -345,7 +345,7 @@ usage = response.usage
 reasoning_tokens = (
     getattr(usage, "completion_tokens_details", None)
     and getattr(usage.completion_tokens_details, "reasoning_tokens", 0)
-) or 0
+) or getattr(usage, "reasoning_tokens", 0) or 0
 
 cached_tokens = (
     getattr(usage, "prompt_tokens_details", None)
@@ -356,7 +356,7 @@ cached_tokens = (
 ```typescript
 const usage = response.usage as any;
 const reasoningTokens =
-  usage?.completion_tokens_details?.reasoning_tokens ?? 0;
+  usage?.completion_tokens_details?.reasoning_tokens ?? usage?.reasoning_tokens ?? 0;
 const cachedTokens =
   usage?.prompt_tokens_details?.cached_tokens ?? usage?.cached_tokens ?? 0;
 ```
