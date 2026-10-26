@@ -341,16 +341,19 @@ A client configured for only one shape will silently return `0` for all others. 
 both locations:
 
 ```python
-usage = response.usage
+# The Python SDK returns the *_details objects as plain dicts, so getattr() on them
+# silently returns the default. Read a dict dump instead.
+usage = response.usage.model_dump()
 reasoning_tokens = (
-    getattr(usage, "completion_tokens_details", None)
-    and getattr(usage.completion_tokens_details, "reasoning_tokens", 0)
-) or getattr(usage, "reasoning_tokens", 0) or 0
-
+    (usage.get("completion_tokens_details") or {}).get("reasoning_tokens")
+    or usage.get("reasoning_tokens")
+    or 0
+)
 cached_tokens = (
-    getattr(usage, "prompt_tokens_details", None)
-    and getattr(usage.prompt_tokens_details, "cached_tokens", 0)
-) or getattr(usage, "cached_tokens", 0)
+    (usage.get("prompt_tokens_details") or {}).get("cached_tokens")
+    or usage.get("cached_tokens")
+    or 0
+)
 ```
 
 ```typescript
