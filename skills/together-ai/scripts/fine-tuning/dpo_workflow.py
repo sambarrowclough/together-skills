@@ -11,7 +11,7 @@ Usage:
     python dpo_workflow.py --model meta-llama/Meta-Llama-3.1-8B-Instruct-Reference
 
 Requires:
-    uv pip install "together>=2.0.0"
+    uv pip install "together>=2.0.0,<3"
     export TOGETHER_API_KEY=your_key
 """
 
