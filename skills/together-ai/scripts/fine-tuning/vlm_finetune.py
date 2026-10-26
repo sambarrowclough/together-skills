@@ -7,7 +7,7 @@ and fine-tune a vision-language model.
 
 Usage:
     python vlm_finetune.py
-    python vlm_finetune.py --training-file vlm.jsonl --model Qwen/Qwen3-VL-8B-Instruct
+    python vlm_finetune.py --training-file vlm.jsonl --model Qwen/Qwen3.5-9B
     python vlm_finetune.py --sample-image-url https://example.com/image.jpg
 
 Requires:
@@ -113,7 +113,7 @@ def create_temp_dataset(rows: list[dict]) -> Path:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Together AI VLM fine-tuning workflow")
     parser.add_argument("--training-file", help="Path to a VLM training JSONL file")
-    parser.add_argument("--model", default="Qwen/Qwen3-VL-8B-Instruct", help="Base VLM to fine-tune")
+    parser.add_argument("--model", default="Qwen/Qwen3.5-9B", help="Base VLM to fine-tune")
     parser.add_argument("--suffix", default="vlm-v1", help="Suffix for the fine-tuned model")
     parser.add_argument("--n-epochs", type=int, default=3, help="Number of training epochs")
     parser.add_argument("--learning-rate", type=float, default=1e-5, help="Training learning rate")
