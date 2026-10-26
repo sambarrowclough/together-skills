@@ -17,7 +17,7 @@ Usage:
     python deploy_model.py rm --endpoint ep_abc123 --deployment dep_abc123
 
 Requires:
-    uv pip install --upgrade "together>=2.0.0,<3"   # 2.x keeps the beta DMI surface (client.beta.*)
+    uv pip install --upgrade "together>=3"
     export TOGETHER_API_KEY=your_key
 
 Billing note: replicas bill per minute while running and there is NO automatic
@@ -31,14 +31,28 @@ import time
 from together import Together
 
 client = Together()
-PROJECT_ID = client.whoami().project_id
 
-INFERENCE_BASE_URL = "https://api-inference.together.ai/v1"
+
+def resolve_project_id() -> str:
+    """TOGETHER_PROJECT_ID if set, else the project of a project-scoped API key."""
+    if client.project_id:
+        return client.project_id
+    identity = client.whoami()
+    project = getattr(identity, "project", None)
+    if project is None:
+        sys.exit(f"whoami returned {identity.type}, which has no project: set TOGETHER_PROJECT_ID.")
+    return project.id
+
+
+PROJECT_ID = resolve_project_id()
+
+# SDK 3.x base URLs omit /v1; each method adds its own version.
+INFERENCE_BASE_URL = "https://api-inference.together.ai"
 
 
 def list_supported_models(search: str | None = None) -> list:
     """List public base models deployable for dedicated inference."""
-    models = client.beta.models.list_supported(product="PRODUCT_DEDICATED")
+    models = client.models.list_supported(product="PRODUCT_DEDICATED")
     rows = [m for m in models.data if not search or search.lower() in m.name.lower()]
     for m in rows:
         print(f"  {m.id}  {m.name}")
@@ -47,7 +61,7 @@ def list_supported_models(search: str | None = None) -> list:
 
 def list_configs(model_id: str) -> list:
     """List published configs (hardware/engine/optimization) for a model."""
-    configs = client.beta.models.configs.list(
+    configs = client.models.configs.list(
         project_id=PROJECT_ID,
         reference_model=f"projects/{PROJECT_ID}/models/{model_id}",
     )
@@ -71,12 +85,12 @@ def deploy(
 ):
     """Create an endpoint, attach a deployment, and route 100% of traffic to it.
 
-    This is what the CLI's `tg beta endpoints deploy` does in one command.
+    This is what the CLI's `tg endpoints deploy` does in one command.
     """
-    endpoint = client.beta.endpoints.create(project_id=PROJECT_ID, name=endpoint_name)
+    endpoint = client.endpoints.create(project_id=PROJECT_ID, name=endpoint_name)
     print(f"Created endpoint: {endpoint.id} ({endpoint.name})")
 
-    deployment = client.beta.endpoints.deployments.create(
+    deployment = client.endpoints.deployments.create(
         endpoint.id,
         project_id=PROJECT_ID,
         name=f"{endpoint_name}-deployment",
@@ -87,7 +101,7 @@ def deploy(
     print(f"Created deployment: {deployment.id}")
 
     # A READY deployment still serves nothing until it's in the traffic split.
-    client.beta.endpoints.update(
+    client.endpoints.update(
         endpoint.id,
         project_id=PROJECT_ID,
         traffic_split=[{"deployment_id": deployment.id, "weight": 1}],
@@ -103,7 +117,7 @@ def wait_for_ready(endpoint_id: str, deployment_id: str, timeout: int = 3600, po
     """Poll deployment status until READY (cold start can take minutes for large models)."""
     elapsed = 0
     while elapsed < timeout:
-        d = client.beta.endpoints.deployments.retrieve(
+        d = client.endpoints.deployments.retrieve(
             deployment_id, project_id=PROJECT_ID, endpoint_id=endpoint_id
         )
         state = d.status.state
@@ -122,7 +136,7 @@ def wait_for_ready(endpoint_id: str, deployment_id: str, timeout: int = 3600, po
 
 def show_status(endpoint_id: str, deployment_id: str):
     """Print the deployment's current state and replica counts."""
-    d = client.beta.endpoints.deployments.retrieve(
+    d = client.endpoints.deployments.retrieve(
         deployment_id, project_id=PROJECT_ID, endpoint_id=endpoint_id
     )
     print(f"  state:     {d.status.state}")
@@ -151,7 +165,7 @@ def infer(endpoint_string: str, prompt: str = "What is 2+2?"):
 
 def scale(endpoint_id: str, deployment_id: str, min_replicas: int, max_replicas: int):
     """Update replica bounds. 0/0 stops the deployment; min 0 with max > 0 is rejected."""
-    d = client.beta.endpoints.deployments.update(
+    d = client.endpoints.deployments.update(
         deployment_id,
         project_id=PROJECT_ID,
         endpoint_id=endpoint_id,
@@ -171,19 +185,19 @@ def delete(endpoint_id: str, deployment_id: str | None = None):
     if deployment_id:
         stop(endpoint_id, deployment_id)
         while True:
-            d = client.beta.endpoints.deployments.retrieve(
+            d = client.endpoints.deployments.retrieve(
                 deployment_id, project_id=PROJECT_ID, endpoint_id=endpoint_id
             )
             if d.status.state in ("DEPLOYMENT_STATE_STOPPED", "DEPLOYMENT_STATE_FAILED"):
                 break
             print(f"  waiting for STOPPED (now {d.status.state})")
             time.sleep(10)
-        client.beta.endpoints.update(endpoint_id, project_id=PROJECT_ID, traffic_split=[])
-        client.beta.endpoints.deployments.delete(
+        client.endpoints.update(endpoint_id, project_id=PROJECT_ID, traffic_split=[])
+        client.endpoints.deployments.delete(
             deployment_id, project_id=PROJECT_ID, endpoint_id=endpoint_id
         )
         print(f"Deleted deployment {deployment_id}")
-    client.beta.endpoints.delete(endpoint_id, project_id=PROJECT_ID)
+    client.endpoints.delete(endpoint_id, project_id=PROJECT_ID)
     print(f"Deleted endpoint {endpoint_id}")
 
 

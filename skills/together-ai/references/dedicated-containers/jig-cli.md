@@ -18,9 +18,9 @@
 ## Installation
 
 ```shell
-uv pip install "together>=2.0.0,<3"
+uv pip install "together>=3"
 # or
-uv tool install "together[cli]<3"
+uv tool install "together[cli]>=3"
 ```
 
 Jig commands are under `together beta jig`.
@@ -184,7 +184,7 @@ together beta jig queue-status
 
 ## Queue API
 
-### Python (v2 SDK)
+### Python (SDK 3.x)
 
 ```python
 from together import Together

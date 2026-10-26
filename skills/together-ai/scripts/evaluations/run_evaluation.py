@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Together AI Evaluations — Run Classify, Score, and Compare (v2 SDK)
+Together AI Evaluations — Run Classify, Score, and Compare (SDK 3.x)
 
 Upload an eval dataset, create an evaluation, poll for results, and optionally
 download the per-row results file. Supports serverless, dedicated, and external
@@ -15,7 +15,7 @@ Usage:
         --eval-model-source external --eval-external-api-token "$OPENAI_API_KEY"
 
 Requires:
-    uv pip install "together>=2.0.0,<3"
+    uv pip install "together>=3"
     export TOGETHER_API_KEY=your_key
 """
 

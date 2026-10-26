@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Together AI speech-to-text examples with the Python v2 SDK.
+Together AI speech-to-text examples with the Python SDK 3.x.
 
 Demonstrates:
 - transcription
@@ -15,7 +15,7 @@ Usage:
     python stt_transcribe.py timestamps audio.mp3 --granularity word
 
 Requirements:
-    uv pip install "together>=2.0.0,<3"
+    uv pip install "together>=3"
     export TOGETHER_API_KEY=your_key
 """
 

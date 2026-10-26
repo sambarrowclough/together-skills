@@ -15,7 +15,7 @@
  *     --eval-model-source external --eval-external-api-token "$OPENAI_API_KEY"
  *
  * Requires:
- *   npm install "together-ai@<1"
+ *   npm install "together-ai@>=1"
  *   export TOGETHER_API_KEY=your_key
  */
 
@@ -227,7 +227,7 @@ async function uploadDataset(dataset: DatasetRow[]): Promise<string> {
   fs.writeFileSync(dataPath, lines, "utf8");
 
   try {
-    const fileResponse = await client.files.upload(dataPath, "eval", false);
+    const fileResponse = await client.files.upload(dataPath, "eval");
     console.log(`Uploaded dataset: ${fileResponse.id}`);
     return fileResponse.id;
   } finally {
